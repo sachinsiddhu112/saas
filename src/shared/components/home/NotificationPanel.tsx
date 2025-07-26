@@ -1,57 +1,8 @@
 "use client";
 import React from "react";
 import { Bell } from "lucide-react";
-
-const notifications = [
-  {
-    id: 1,
-    title: "Server maintenance scheduled",
-    time: "1 hour ago",
-    priority: "high",
-    type: "maintenance",
-  },
-  {
-    id: 2,
-    title: "New team member added",
-    time: "2 hours ago",
-    priority: "medium",
-    type: "team",
-  },
-  {
-    id: 3,
-    title: "Monthly report ready",
-    time: "3 hours ago",
-    priority: "low",
-    type: "report",
-  },
-  {
-    id: 4,
-    title: "Payment method updated",
-    time: "5 hours ago",
-    priority: "medium",
-    type: "payment",
-  },
-  {
-    id: 5,
-    title: "Security alert resolved",
-    time: "6 hours ago",
-    priority: "high",
-    type: "security",
-  },
-];
-
-const getPriorityColor = (priority: string) => {
-  switch (priority) {
-    case "high":
-      return "bg-red-500";
-    case "medium":
-      return "bg-gray-800";
-    case "low":
-      return "bg-gray-400";
-    default:
-      return "bg-gray-400";
-  }
-};
+import { notifications } from "@/shared/utils/mockData";
+import { getPriorityColor, getTypeColor } from "@/shared/utils/utilFunctions";
 
 const NotificationsPanel = () => {
   return (
@@ -63,22 +14,36 @@ const NotificationsPanel = () => {
         <h3 className="text-lg font-semibold text-gray-900">Notifications</h3>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-4 h-96 overflow-y-auto custom-scroll">
         {notifications.map((notification) => (
-          <div key={notification.id} className="flex items-start space-x-3">
+          <div
+            key={notification.id}
+            className="flex items-start space-x-3 shadow-md rounded-md p-4 hover:bg-gray-100 transition-colors"
+          >
             <div
               className={`w-2 h-2 ${getPriorityColor(
-                notification.priority
+                notification.priority,
+                notification.status
               )} rounded-full mt-2 flex-shrink-0`}
             ></div>
             <div className="flex-1">
               <div className="flex items-center space-x-2 mb-1">
                 <span
                   className={`px-2 py-1 text-xs rounded-full text-white ${getPriorityColor(
-                    notification.priority
+                    notification.priority,
+                    notification.status
                   )}`}
                 >
-                  {notification.priority}
+                  {notification.priority.charAt(0).toUpperCase() +
+                    notification.priority.slice(1)}
+                </span>
+                <span
+                  className={`px-2 py-1 text-xs rounded-full font-medium text-gray-700 bg-gray-200 ${getTypeColor(
+                    notification.type
+                  )}`}
+                >
+                  {notification.type.charAt(0).toUpperCase() +
+                    notification.type.slice(1)}
                 </span>
               </div>
               <p className="text-sm font-medium text-gray-900">
